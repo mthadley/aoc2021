@@ -26,10 +26,10 @@ class AdventOfCode
 
   def play_part!(part, part_num)
     status =
-      case part
-      in nil | { expected: nil } then                    "❔"
-      in {expected:, actual:} if expected == actual then "✅"
-      else                                               "❌"
+      case part&.correct?
+      when nil   then "❔"
+      when true  then "✅"
+      when false then "❌"
       end
 
     puts "Part #{part_num}: #{part&.actual} #{status}"
@@ -43,6 +43,6 @@ class AdventOfCode
 
   Part = Struct.new(:expected, :block, keyword_init: true) do
     def actual = @actual ||= block.call
-    def deconstruct_keys(...) = super.merge(actual: actual)
+    def correct? = expected && expected == actual
   end
 end

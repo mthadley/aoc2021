@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+require_relative "../environment"
+
+part1 answer: 3 do
+  input.lines.size
+end
+
+__END__
+foo
+bar
+baz

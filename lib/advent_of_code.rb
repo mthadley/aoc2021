@@ -27,7 +27,7 @@ class AdventOfCode
   def play_part!(part, part_num)
     status =
       case
-      when part.nil? then "❔"
+      when part.nil? || part.expected.nil? then "❔"
       when part.actual == part.expected then "✅"
       else "❌"
       end

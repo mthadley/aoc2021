@@ -5,7 +5,7 @@ require_relative "lib/advent_of_code"
 
 def part1(...) = AdventOfCode.instance.add_part(1, ...)
 def part2(...) = AdventOfCode.instance.add_part(2, ...)
-def input = DATA.read
+def input = AdventOfCode.instance.input
 
 at_exit do
   AdventOfCode.instance.play!

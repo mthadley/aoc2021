@@ -11,6 +11,8 @@ class AdventOfCode
     @parts[part - 1] = Part.new(expected: answer, block: block)
   end
 
+  def input = @input ||= DATA.read
+
   def play!
     puts <<~OUT
       Day #{current_day_num || "?"}

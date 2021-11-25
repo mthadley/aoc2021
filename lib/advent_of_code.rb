@@ -13,20 +13,20 @@ class AdventOfCode
 
   def input = @input ||= DATA.read
 
-  def play!
+  def play
     puts <<~OUT
       Day #{current_day_num || "?"}
       =====================
     OUT
 
     @parts.each.with_index do |part, i|
-      play_part!(part, i + 1)
+      play_part(part, i + 1)
     end
   end
 
   private
 
-  def play_part!(part, part_num)
+  def play_part(part, part_num)
     status =
       case part&.correct?
       when nil   then "❔"

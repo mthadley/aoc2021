@@ -7,6 +7,4 @@ def part1(...) = AdventOfCode.instance.add_part(1, ...)
 def part2(...) = AdventOfCode.instance.add_part(2, ...)
 def input = AdventOfCode.instance.input
 
-at_exit do
-  AdventOfCode.instance.play!
-end
+at_exit { AdventOfCode.instance.play }

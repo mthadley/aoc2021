@@ -1,8 +1,8 @@
 #!/usr/bin/env ruby
 require_relative "../environment"
 
-part1 answer: 3 do
-  input.lines.size
+part1 answer: 12 do
+  input.lines.sum(&:size)
 end
 
 __END__

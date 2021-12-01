@@ -4,13 +4,11 @@ require_relative "../environment"
 measurements = input.lines.map(&:to_i)
 
 part1 answer: 1688 do
-  measurements.zip(measurements[1..]).count { _2 && _1 < _2 }
+  measurements.each_cons(2).count { _1 < _2 }
 end
 
 part2 answer: 1728 do
-  measurements.each_index.count do |i|
-    measurements.slice(i, 3).sum > measurements.slice(i-1, 3).sum
-  end
+  measurements.each_cons(3).map(&:sum).each_cons(2).count { _1 < _2 }
 end
 
 __END__

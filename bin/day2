@@ -10,19 +10,14 @@ part2 answer: 1963088820 do
 end
 
 def run(sub_klass)
-  sub = input.
-        lines.
-        map { Command.parse(_1) }.
-        each_with_object(sub_klass.new) do |command, sub|
-          sub.process(command)
-        end
-
-  sub.horizontal * sub.depth
+  input.
+    lines.
+    map { Command.parse(_1) }.
+    each_with_object(sub_klass.new) { |cmd, sub| sub.process(cmd) }.
+    answer
 end
 
 class Submarine
-  attr_reader :horizontal, :depth
-
   def initialize
     @horizontal = 0
     @depth = 0
@@ -35,6 +30,8 @@ class Submarine
     when :down    then @depth += command.value
     end
   end
+
+  def answer = @horizontal * @depth
 end
 
 class AimedSubmarine < Submarine
@@ -56,11 +53,10 @@ end
 
 Command = Struct.new(:type, :value) do
   def self.parse(line)
-    if /(?<command>\w+)\s+(?<value>\d+)/ =~ line
-      new(command.to_sym, value.to_i)
-    else
-      raise TypeError, "Invalid input: #{line}"
-    end
+    /(?<type>\w+)\s+(?<value>\d+)/ =~ line or
+      raise TypeError, "Bad input: #{line}"
+
+    new(type.to_sym, value.to_i)
   end
 end
 

@@ -17,7 +17,7 @@ end
 
 def filter_bits(nums, &block)
   current_nums = nums.clone
-  current_bit = 0;
+  current_bit = 0
 
   until current_nums.size == 1
     expected_bits = current_nums.map(&:chars).transpose.map(&block)

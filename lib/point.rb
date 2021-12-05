@@ -35,6 +35,6 @@ class Point
   def to_point = self
 end
 
-class Integer
+class Numeric
   def to_point = Point[self, self]
 end

@@ -9,10 +9,9 @@ class Point
     freeze
   end
 
-  def +(...) = bin_op(:+, ...)
-  def -(...) = bin_op(:+, ...)
-  def *(...) = bin_op(:*, ...)
-  def /(...) = bin_op(:/, ...)
+  %i[+ - * /].each do |op|
+    define_method(op) { |*args| bin_op(op, *args) }
+  end
 
   def ==(other)
     return false unless other.is_a?(self.class)

@@ -10,7 +10,13 @@ class Point
   end
 
   %i[+ - * /].each do |op|
-    define_method(op) { |*args| bin_op(op, *args) }
+    # `eval` used over `define_method` for speed
+    eval <<~RUBY
+      def #{op}(other)
+        other = other.to_point
+        self.class[x #{op} other.x, y #{op} other.y]
+      end
+    RUBY
   end
 
   def ==(other)
@@ -25,14 +31,6 @@ class Point
   def inspect = "(#{x.inspect}, #{y.inspect})"
 
   def to_point = self
-
-  private
-
-  def bin_op(op, other)
-    other = other.to_point
-    self.class[x.public_send(op, other.x),
-               y.public_send(op, other.y)]
-  end
 end
 
 class Numeric

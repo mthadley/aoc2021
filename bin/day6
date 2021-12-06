@@ -27,7 +27,7 @@ class School
   end
 
   def pass_day
-    @fish.transform_keys! { |k| k - 1 }
+    @fish.transform_keys!(&:pred)
     @fish[6] += @fish.fetch(-1, 0)
     @fish[8] += @fish.fetch(-1, 0)
     @fish[-1] = 0

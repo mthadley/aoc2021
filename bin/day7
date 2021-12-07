@@ -5,17 +5,13 @@ nums = input.split(",").map(&:to_i)
 
 part1 answer: 326132 do
   (0..nums.max).
-    map do |target|
-      nums.map { |i| (i - target).abs }.sum
-    end.
+    map { |t| nums.map { |i| (i - t).abs }.sum }.
     min
 end
 
 part2 answer: 88612508 do
   (0..nums.max).
-    map do |target|
-      nums.map { |i| (1..(i - target).abs).sum }.sum
-    end.
+    map { |t| nums.map { |i| (1..(i - t).abs).sum }.sum }.
     min
 end
 

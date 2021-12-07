@@ -14,7 +14,7 @@ end
 part2 answer: 88612508 do
   (0..nums.max).
     map do |target|
-      nums.map { (1..(_1 - target).abs).sum }.sum
+      nums.map { |i| (1..(i - target).abs).sum }.sum
     end.
     min
 end

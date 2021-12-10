@@ -3,6 +3,10 @@ class Point
 
   def self.[](x, y) = new(x, y)
 
+  def self.cardinals
+    [[0, 1], [1, 0], [0, -1], [-1, 0]].map { new(*_1) }
+  end
+
   def initialize(x, y)
     @x = x
     @y = y
@@ -18,6 +22,8 @@ class Point
       end
     RUBY
   end
+
+  def cardinals = self.class.cardinals.map { _1 + self }
 
   def ==(other)
     return false unless other.is_a?(self.class)

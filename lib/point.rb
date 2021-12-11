@@ -7,6 +7,12 @@ class Point
     [[0, 1], [1, 0], [0, -1], [-1, 0]].map { new(*_1) }
   end
 
+  def self.ordinals
+    [[1, 1], [1, -1], [-1, -1], [-1, 1]].map { new(*_1) }
+  end
+
+  def self.principals = cardinals + ordinals
+
   def initialize(x, y)
     @x = x
     @y = y
@@ -24,6 +30,8 @@ class Point
   end
 
   def cardinals = self.class.cardinals.map { _1 + self }
+  def ordinals = self.class.ordinals.map { _1 + self }
+  def principals = cardinals + ordinals
 
   def ==(other)
     return false unless other.is_a?(self.class)

@@ -1,0 +1,89 @@
+#!/usr/bin/env ruby
+require_relative "../environment"
+
+require "set"
+require_relative "../lib/point"
+
+part1 answer: 1613 do
+  grid = Grid.parse
+
+  100.times.sum do
+    grid.next
+    grid.flashes.count
+  end
+end
+
+part2 answer: 510 do
+  grid = Grid.parse
+  grid.next until grid.all_flashed?
+  grid.step
+end
+
+class Grid
+  attr_reader :step, :flashes
+
+  def self.parse
+    grid = input.lines(chomp: true).flat_map.with_index do |line, y|
+      line.chars.map.with_index do |char, x|
+        [Point[x, y], char.to_i]
+      end
+    end
+
+    new(grid.to_h)
+  end
+
+  def initialize(grid)
+    @grid = grid
+    @flashes = Set[]
+    @step = 0
+  end
+
+  def next
+    @step += 1
+    @flashes.clear
+
+    queue = []
+
+    @grid.each_key do |point|
+      if (@grid[point] += 1) > 9
+        @flashes << point
+        queue << point
+      end
+    end
+
+    until queue.empty?
+      principals(queue.pop).each do |point|
+        next if @flashes.include?(point)
+
+        if (@grid[point] += 1) > 9
+          @flashes << point
+          queue << point
+        end
+      end
+    end
+
+    reset_flashed_energy
+  end
+
+  def all_flashed? = Set.new(@grid.keys) == @flashes
+
+  private
+
+  def principals(point)
+    point.principals.reject { |p| @grid[p].nil? }
+  end
+
+  def reset_flashed_energy = @flashes.each { |p| @grid[p] = 0 }
+end
+
+__END__
+3322874652
+5636588857
+7755117548
+5854121833
+2856682477
+3124873812
+1541372254
+8634383236
+2424323348
+2265635842

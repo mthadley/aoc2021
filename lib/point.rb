@@ -3,14 +3,14 @@ class Point
 
   def self.[](x, y) = new(x, y)
 
-  def self.cardinals
-    [[0, 1], [1, 0], [0, -1], [-1, 0]].map { new(*_1) }
-  end
+  CARDINALS = [[0, 1], [1, 0], [0, -1], [-1, 0]].freeze
+  private_constant :CARDINALS
 
-  def self.ordinals
-    [[1, 1], [1, -1], [-1, -1], [-1, 1]].map { new(*_1) }
-  end
+  ORDINALS = [[1, 1], [-1, 1], [1, -1], [-1, -1]].freeze
+  private_constant :ORDINALS
 
+  def self.cardinals = CARDINALS.map { new(*_1) }
+  def self.ordinals = ORDINALS.map { new(*_1) }
   def self.principals = cardinals + ordinals
 
   def initialize(x, y)

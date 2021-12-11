@@ -15,7 +15,7 @@ end
 
 part2 answer: 510 do
   grid = Grid.parse
-  grid.next until grid.all_flashed?
+  grid.next until grid.synchronized?
   grid.step
 end
 
@@ -65,7 +65,7 @@ class Grid
     reset_flashed_energy
   end
 
-  def all_flashed? = Set.new(@grid.keys) == @flashes
+  def synchronized? = Set.new(@grid.keys) == @flashes
 
   private
 

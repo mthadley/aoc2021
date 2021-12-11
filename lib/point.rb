@@ -19,7 +19,7 @@ class Point
     freeze
   end
 
-  %i[+ - * /].each do |op|
+  %w[+ - * /].each do |op|
     # `eval` used over `define_method` for speed
     eval <<~RUBY
       def #{op}(other)

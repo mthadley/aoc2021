@@ -14,8 +14,7 @@ class Point
   def self.principals = cardinals + ordinals
 
   def initialize(x, y)
-    @x = x
-    @y = y
+    @x, @y = x, y
     freeze
   end
 

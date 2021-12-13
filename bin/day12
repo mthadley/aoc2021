@@ -76,9 +76,10 @@ class Cave
   START = new("start")
   END_ = new("end")
 
-  def small? = name.downcase == name
-  def end? = self == END_
   def start? = self == START
+  def end? = self == END_
+
+  def small? = name.downcase == name
 
   def ==(other)
     return false unless other.is_a?(self.class)

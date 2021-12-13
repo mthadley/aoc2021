@@ -1,0 +1,113 @@
+#!/usr/bin/env ruby
+require_relative "../environment"
+
+require "forwardable"
+require "set"
+
+part1 answer: 3738 do
+  Map.parse.num_paths
+end
+
+part2 answer: 120506 do
+  Map.parse.num_paths_redux
+end
+
+class Map
+  def self.parse
+    edges = Hash.new { |h, k| h[k] = Set[] }
+
+    input.
+      lines(chomp: true).
+      each do |line|
+        a, b = line.split("-").map { Cave.new(_1) }
+        edges[a] << b
+        edges[b] << a
+      end
+
+    new(edges)
+  end
+
+  def initialize(edges) = @edges = edges
+
+  def num_paths(current: Cave::START, seen: Set[])
+    return 1 if current.end?
+    return 0 if seen.include?(current)
+
+    new_seen = seen.dup
+    new_seen << current if current.small?
+
+    @edges[current].sum do |cave|
+      num_paths(current: cave, seen: new_seen)
+    end
+  end
+
+  def num_paths_redux(current: Cave::START, seen: Set[], second: nil)
+    return 1 if current.end?
+    return 0 if second && seen.include?(current)
+
+    new_seen = seen.dup
+
+    if current.small? && !new_seen.add?(current) && second.nil?
+      @edges[current].sum do |cave|
+        num_paths_redux(current: cave, seen: new_seen, second: current)
+      end
+    else
+      @edges[current].sum do |cave|
+        next 0 if cave.start?
+
+        num_paths_redux(current: cave, seen: new_seen, second: second)
+      end
+    end
+  end
+end
+
+class Cave
+  extend Forwardable
+
+  attr_reader :name
+
+  def_delegators :name, :hash
+
+  def initialize(name)
+    @name = name
+    freeze
+  end
+
+  START = new("start")
+  END_ = new("end")
+
+  def small? = name.downcase == name
+  def end? = self == END_
+  def start? = self == START
+
+  def ==(other)
+    return false unless other.is_a?(self.class)
+
+    name == other.name
+  end
+  alias_method :eql?, :==
+end
+
+__END__
+zs-WO
+zs-QJ
+WO-zt
+zs-DP
+WO-end
+gv-zt
+iu-SK
+HW-zs
+iu-WO
+gv-WO
+gv-start
+gv-DP
+start-WO
+HW-zt
+iu-HW
+gv-HW
+zs-SK
+HW-end
+zs-end
+DP-by
+DP-iu
+zt-start

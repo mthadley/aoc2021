@@ -1,0 +1,173 @@
+#!/usr/bin/env ruby
+require_relative "../environment"
+
+require "forwardable"
+
+part1 answer: 3697 do
+  counts = Template.parse.counts_after(steps: 10, rules: Rules.parse)
+  counts.values.minmax.reverse.inject(:-)
+end
+
+part2 answer: 4371307836157 do
+  counts = Template.parse.counts_after(steps: 40, rules: Rules.parse)
+  counts.values.minmax.reverse.inject(:-)
+end
+
+class Template
+  def self.parse
+    str = input.split("\n\n").first
+    new(str)
+  end
+
+  def initialize(str) = @template = str
+
+  def counts_after(steps:, rules:)
+    pairs = @template.chars.each_cons(2).tally
+    pairs.default = 0
+
+    steps.times do
+      new_pairs = Hash.new { |h, k| h[k] = 0 }
+
+      pairs.each do |(l, r), count|
+        m = rules.fetch(l + r)
+
+        new_pairs[[l, m]] += count
+        new_pairs[[m, r]] += count
+      end
+
+      pairs = new_pairs
+    end
+
+    counts = Hash.new { |h, k| h[k] = 0 }
+    counts[@template.chars.last] += 1
+
+    pairs.each do |(l, _), count|
+      counts[l] += count
+    end
+
+    counts
+  end
+end
+
+class Rules
+  extend Forwardable
+
+  def_delegators :@rules, :fetch
+
+  def self.parse
+    rules = input.split("\n\n")[1].lines(chomp: true).map do |line|
+      raise "Invalid input: #{line}" unless
+        /(?<pair>\w+)\s+->\s+(?<result>\w+)/ =~ line
+
+      [pair, result]
+    end
+
+    new(rules.to_h)
+  end
+
+  def initialize(rules) = @rules = rules
+end
+
+__END__
+CPSSSFCFOFVFNVPKBFVN
+
+NV -> V
+CF -> O
+BB -> F
+SB -> H
+KF -> O
+SP -> H
+CS -> V
+VF -> F
+PC -> H
+PH -> H
+SF -> F
+CP -> B
+BC -> H
+PB -> V
+KO -> B
+CV -> S
+ON -> B
+PV -> F
+OO -> B
+VV -> B
+NO -> B
+SH -> N
+FC -> C
+VO -> B
+NN -> C
+HH -> S
+CK -> C
+PF -> N
+SN -> K
+OK -> F
+FH -> S
+BP -> K
+HO -> K
+FB -> P
+HC -> N
+FP -> P
+NC -> H
+PK -> O
+BV -> P
+HK -> S
+PP -> N
+VC -> K
+CH -> C
+KS -> V
+KB -> V
+FN -> P
+BS -> O
+PS -> N
+NS -> B
+PN -> N
+NP -> H
+CB -> S
+SV -> O
+OC -> H
+BO -> C
+HN -> N
+HP -> N
+OF -> H
+FS -> S
+KV -> P
+HV -> S
+VS -> P
+BH -> N
+CC -> V
+VN -> H
+NF -> B
+NK -> N
+CN -> F
+FV -> P
+NH -> S
+OV -> H
+KN -> F
+SO -> H
+OP -> N
+KC -> P
+HB -> B
+BN -> V
+VP -> N
+HS -> S
+VK -> C
+VH -> H
+OS -> C
+FO -> B
+NB -> P
+KP -> V
+SS -> O
+BK -> F
+SK -> N
+HF -> O
+PO -> F
+OH -> B
+KK -> O
+FK -> S
+VB -> V
+OB -> C
+KH -> H
+SC -> F
+FF -> H
+CO -> V
+BF -> H

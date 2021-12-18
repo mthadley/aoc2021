@@ -2,6 +2,7 @@ class Point
   attr_reader :x, :y
 
   def self.[](x, y) = new(x, y)
+  def self.origin = self[0, 0]
 
   CARDINALS = [[0, 1], [1, 0], [0, -1], [-1, 0]].freeze
   private_constant :CARDINALS

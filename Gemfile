@@ -1,3 +1,3 @@
 source "https://rubygems.org"
 
-# gem "parslet"
+gem 'lazy_priority_queue'

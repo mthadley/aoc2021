@@ -1,0 +1,58 @@
+#!/usr/bin/env ruby
+require_relative "../environment"
+
+require_relative "../lib/point"
+
+part1 answer: 13041 do
+  (-165..165).to_a.repeated_permutation(2).map do |x, y|
+    probe = Probe.new(x, y)
+    next 0 unless probe.hits_target?
+
+    probe.history.map(&:y).max
+  end.max
+end
+
+part2 answer: 1031 do
+  (-165..165).to_a.repeated_permutation(2).count do |x, y|
+    Probe.new(x, y).hits_target?
+  end
+end
+
+class Probe
+  TARGET_X = 56..76
+  TARGET_Y = -162..-134
+
+  attr_reader :history
+
+  def initialize(x_vel, y_vel)
+    @history = [Point.origin]
+    @x_vel = x_vel
+    @y_vel = y_vel
+  end
+
+  def hits_target?
+    loop do
+      return true if in_target?
+      return false if past_target?
+      next_step
+    end
+  end
+
+  private
+
+  def pos = @history.last
+
+  def next_step
+    @history << pos + Point[@x_vel, @y_vel]
+    @x_vel = [@x_vel - 1, 0].max
+    @y_vel -= 1
+  end
+
+  def in_target?
+    TARGET_X.include?(pos.x) && TARGET_Y.include?(pos.y)
+  end
+
+  def past_target?
+    pos.y < TARGET_Y.first || pos.x > TARGET_X.last
+  end
+end
